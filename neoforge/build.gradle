@@ -34,12 +34,12 @@ repositories {
 }
 
 dependencies {
-    neoForge "net.neoforged:neoforge:$rootProject.neoforge_version"
+//    neoForge "net.neoforged:neoforge:$rootProject.neoforge_version"
 
-    common(project(path: ':common', configuration: 'namedElements')) { transitive false }
-    shadowBundle project(path: ':common', configuration: 'transformProductionNeoForge')
-
-    modApi("me.shedaniel.cloth:cloth-config-neoforge:$rootProject.neoforge_cloth_config_version")
+//    common(project(path: ':common', configuration: 'namedElements')) { transitive false }
+//    shadowBundle project(path: ':common', configuration: 'transformProductionNeoForge')
+//
+//    modApi("me.shedaniel.cloth:cloth-config-neoforge:$rootProject.neoforge_cloth_config_version")
 }
 
 processResources {
@@ -61,14 +61,14 @@ processResources {
             enabled_platforms                   : enabled_platforms,
             // Minecraft properties
             minecraft_version                   : minecraft_version,
-            // Neoforge dependencies
-            neoforge_version                    : neoforge_version,
-            neoforge_cloth_config_version       : neoforge_cloth_config_version,
-            // Neoforge dependencies requirements
-            neoforge_loader_version_range       : neoforge_loader_version_range,
-            neoforge_version_range              : neoforge_version_range,
-            neoforge_minecraft_version_range    : neoforge_minecraft_version_range,
-            neoforge_cloth_config_version_range : neoforge_cloth_config_version_range
+//            // Neoforge dependencies
+//            neoforge_version                    : neoforge_version,
+//            neoforge_cloth_config_version       : neoforge_cloth_config_version,
+//            // Neoforge dependencies requirements
+//            neoforge_loader_version_range       : neoforge_loader_version_range,
+//            neoforge_version_range              : neoforge_version_range,
+//            neoforge_minecraft_version_range    : neoforge_minecraft_version_range,
+//            neoforge_cloth_config_version_range : neoforge_cloth_config_version_range
     ]
 
     inputs.properties replaceProperties

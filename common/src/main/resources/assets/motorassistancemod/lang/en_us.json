@@ -1,5 +1,5 @@
 {
-  "text.autoconfig.motorassistancemod.title": "Motor Assistance Configuration",
+  "text.autoconfig.motorassistancemod.title": "Nexus Admin Configuration",
   "text.autoconfig.motorassistancemod.option.modConfig": "Configuration",
   "text.autoconfig.motorassistancemod.option.modConfig.fov": "Field of view",
   "text.autoconfig.motorassistancemod.option.modConfig.onlyAssistController": "Only assist when using a controller",

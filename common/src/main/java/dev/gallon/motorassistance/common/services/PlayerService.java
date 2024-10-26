@@ -10,6 +10,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerService extends EntityService {
@@ -27,8 +28,8 @@ public class PlayerService extends EntityService {
     }
 
     public List<EntityService> findMobsAroundPlayer(double range) {
-        return entity
-                .level()
+        ArrayList<EntityService> lst = new java.util.ArrayList<>(entity
+                .getLevel()
                 .getEntitiesOfClass(
                         Mob.class,
                         new AABB(
@@ -42,7 +43,26 @@ public class PlayerService extends EntityService {
                 )
                 .stream()
                 .map(EntityService::new)
-                .toList();
+                .toList());
+        lst.addAll(
+                entity
+                        .getLevel()
+                        .getEntitiesOfClass(
+                                Player.class,
+                                new AABB(
+                                        entity.getX() - range,
+                                        entity.getY() - range,
+                                        entity.getZ() - range,
+                                        entity.getX() + range,
+                                        entity.getY() + range,
+                                        entity.getZ() + range
+                                )
+                        )
+                        .stream()
+                        .map(EntityService::new)
+                        .toList()
+        );
+        return lst;
     }
 
     public BlockService rayTrace(double reach, Position source, Rotation direction) {
@@ -54,7 +74,7 @@ public class PlayerService extends EntityService {
         float f7 = f2 * f4;
         Vec3 vector = source.toVec3().add(f6 * reach, f5 * reach, f7 * reach);
 
-        return new BlockService(entity.level().clip(
+        return new BlockService(entity.getLevel().clip(
                 new ClipContext(
                         source.toVec3(),
                         vector,

@@ -31,23 +31,23 @@ public class MinecraftService {
         if (Minecraft.getInstance().hitResult == null) {
             return Optional.empty();
         } else {
-            return switch (Minecraft.getInstance().hitResult) {
-                case EntityHitResult e -> {
-                    if (getPlayer().isPresent()) {
-                        yield Optional.of(
-                                getPlayer().get().rayTrace(
-                                        maxRange,
-                                        Position.fromVec3(e.getEntity().getEyePosition()),
-                                        Rotation.fromVec3(e.getEntity().getLookAngle())
-                                )
-                        );
-                    } else {
-                        yield Optional.empty();
-                    }
+            if (Minecraft.getInstance().hitResult instanceof EntityHitResult e) {
+                if (getPlayer().isPresent()) {
+                    return Optional.of(
+                            getPlayer().get().rayTrace(
+                                    maxRange,
+                                    Position.fromVec3(e.getEntity().getEyePosition()),
+                                    Rotation.fromVec3(e.getEntity().getLookAngle())
+                            )
+                    );
+                } else {
+                    return Optional.empty();
                 }
-                case BlockHitResult b -> Optional.of(new BlockService(b));
-                default -> Optional.empty();
-            };
+            } else if (Minecraft.getInstance().hitResult instanceof BlockHitResult b) {
+                return Optional.of(new BlockService(b));
+            } else {
+                return Optional.empty();
+            }
         }
     }
 }

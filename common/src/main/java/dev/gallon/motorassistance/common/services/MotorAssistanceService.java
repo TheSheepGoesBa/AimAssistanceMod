@@ -38,14 +38,15 @@ public class MotorAssistanceService {
         Optional<PlayerService> player = MinecraftService.getPlayer();
         if (player.isEmpty() || !player.get().canInteract()) return;
 
-        switch (interactingWith) {
-            case TargetType.ENTITY -> computeClosestEntity(
+        if (interactingWith == TargetType.ENTITY) {
+            computeClosestEntity(
                     player.get(),
                     player.get().findMobsAroundPlayer(config.getEntityRange())
             ).ifPresent(entityService -> target = entityService);
-            case TargetType.BLOCK -> MinecraftService
-                    .getPointedBlock(config.getBlockRange())
-                    .ifPresent(pointedBlock -> target = pointedBlock);
+//} else if (interactingWith == TargetType.BLOCK) {
+//    MinecraftService
+//            .getPointedBlock(config.getBlockRange())
+//            .ifPresent(pointedBlock -> target = pointedBlock);
         }
     }
 
@@ -107,11 +108,14 @@ public class MotorAssistanceService {
         // Common
 
         // Stop the interaction once that the delay is reached
-        long duration = switch (interactingWith) {
-            case TargetType.ENTITY -> config.getAttackAssistanceDuration();
-            case TargetType.BLOCK -> config.getMiningAssistanceDuration();
-            case TargetType.NONE -> 0;
-        };
+        long duration;
+        if (interactingWith == TargetType.ENTITY) {
+            duration = config.getAttackAssistanceDuration();
+        } else if (interactingWith == TargetType.BLOCK) {
+            duration = config.getMiningAssistanceDuration();
+        } else {
+            duration = 0;
+        }
 
         if (interactingWith != TargetType.NONE && interactionTimer.timeElapsed(duration)) {
             target = null;
@@ -238,11 +242,14 @@ public class MotorAssistanceService {
             double fovY,
             Rotation step
     ) {
-        Rotation rotation = switch (target) {
-            case BlockService b -> computeRotationBetween(source.getEyesPosition(), b.getFacePosition());
-            case EntityService e -> computeSmallestRotationBetween(source, e);
-            default -> throw new IllegalStateException("Unexpected target: " + target);
-        };
+        Rotation rotation;
+        if (target instanceof BlockService b) {
+            rotation = computeRotationBetween(source.getEyesPosition(), b.getFacePosition());
+        } else if (target instanceof EntityService e) {
+            rotation = computeSmallestRotationBetween(source, e);
+        } else {
+            throw new IllegalStateException("Unexpected target: " + target);
+        }
 
         // We check if the entity is within the FOV of the player
         // yaw and pitch are MathHelper.absolute, not relative to anything. We fix that by calling wrapDegrees and subtracting
