@@ -29,7 +29,7 @@ public class PlayerService extends EntityService {
 
     public List<EntityService> findMobsAroundPlayer(double range) {
         ArrayList<EntityService> lst = new java.util.ArrayList<>(entity
-                .getLevel()
+                .level()
                 .getEntitiesOfClass(
                         Mob.class,
                         new AABB(
@@ -46,7 +46,7 @@ public class PlayerService extends EntityService {
                 .toList());
         lst.addAll(
                 entity
-                        .getLevel()
+                        .level()
                         .getEntitiesOfClass(
                                 Player.class,
                                 new AABB(
@@ -74,7 +74,7 @@ public class PlayerService extends EntityService {
         float f7 = f2 * f4;
         Vec3 vector = source.toVec3().add(f6 * reach, f5 * reach, f7 * reach);
 
-        return new BlockService(entity.getLevel().clip(
+        return new BlockService(entity.level().clip(
                 new ClipContext(
                         source.toVec3(),
                         vector,
